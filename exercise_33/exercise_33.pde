@@ -68,8 +68,8 @@ println(zoom);
   translate(offset.x/zoom, offset.y/zoom ); // using mousepos to "retranslate" to be able to pan around the screen 
 
   //the sun
-  stroke(0);
-  fill(255);
+  colorMode(HSB);
+  fill(50, 255,255);
   ellipse(0, 0, sunDiameter, sunDiameter);
   
 

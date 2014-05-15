@@ -58,14 +58,16 @@ class Planet {
     // translate out distance
     translate(planetDistance, 0); 
 
-    stroke(0);
-    fill(175);
+    noStroke();
+    colorMode(HSB);
+    fill(255, 255, 255);
     ellipse(0, 0, planetDiameter, planetDiameter);
 
-    fill(200, 200, 0);
+    fill(200, 200,200);
+    stroke(1);
     rotate(-planetRotation); // counter the rotation of the planet so that the text below always will be vertical on screen
     text(planetName, planetDiameter, 0);
-    println(planetName, moonAmount);
+    
 
     // The planet is drawn, now draw and update the moon(s) if the planet object has one
     if (hasMoon == true) {

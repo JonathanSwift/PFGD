@@ -19,17 +19,22 @@ class Moon {
     spawnPos = random (0, 360);
     moonRotation = 0;
 
-    if (_planet.planetName != "earth") {
+    if (_planet.planetName != "earth" || _planet.planetName != "mars") {
       moonDistance = random(_planet.planetDiameter/1.5, _planet.planetDiameter);
-      moonDiameter = random(_planet.planetDiameter/40, _planet.planetDiameter/30);
-      moonOrbitspeed = random(0.006, 0.008);
+      moonDiameter = random(_planet.planetDiameter/60, _planet.planetDiameter/50);
+      moonOrbitspeed = random(0.004, 0.008);
     }
 
-    else if (_planet.planetName == "earth") {
-      moonDistance = random(_planet.planetDiameter/1.5, _planet.planetDiameter);
+    if (_planet.planetName == "earth") {
+      moonDistance = _planet.planetDiameter;
+      moonDiameter = _planet.planetDiameter/4; 
+      moonOrbitspeed = 0.008;
+    }
+    
+    if (_planet.planetName == "mars"){
+      moonDistance = _planet.planetDiameter;
       moonDiameter = _planet.planetDiameter/4; 
       moonOrbitspeed = random(0.006, 0.008);
-      
     }
   }
 
@@ -51,8 +56,9 @@ class Moon {
     // translate out distance from planets center
     translate(moonDistance, 0); 
 
-    stroke(0);
-    fill(175, 200, 200);
+    noStroke();
+    colorMode(HSB);
+    fill(255, 200, 200);
     ellipse(0, 0, moonDiameter, moonDiameter);
     // Once the planet is drawn, the matrix is restored with popMatrix() so that the next planet is not affected.
     popMatrix();
