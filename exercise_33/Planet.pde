@@ -1,40 +1,51 @@
 class Planet {
-  // Each planet object keeps track of its own angle of rotation.
-  float theta;      // Rotation around sun
-  float diameter;   // Size of planet
-  float distance;   // Distance from sun
-  float orbitSpeed; // Orbit speed
 
-    //mooncontrol
+  
+  float planetRotation;      // Rotation around sun
+  String planetName; //the name of the planet
+  float planetDiameter;   // Size of planet
+  float planetDistance;   // Distance from sun
+  float planetOrbitSpeed; // Orbit speed
+  
+  float planetRadius;
+
+    //moon control
   boolean hasMoon;
   int moonSpawned;
+  int moonAmount;
+  ArrayList <Moon> moons;
 
 
-  //initializing moon from the moon class
+  //initializing object from the moon class
   Moon moon;
 
 
-  Planet(float _distance, float _diameter, float _orbitSpeed, boolean _hasMoon) {
-    distance = _distance;
-    diameter = _diameter;
-    orbitSpeed = _orbitSpeed;
-    hasMoon = _hasMoon;
-    
+  Planet(String _name, float _distance, float _diameter, float _orbitSpeed, boolean _hasMoon, int _moonAmount) {
+    planetName = _name;
+    planetDistance = _distance;
+    planetDiameter = _diameter;
+    planetOrbitSpeed = _orbitSpeed;
 
-    theta = 0;
+    //moon control
+    hasMoon = _hasMoon;
+    moonAmount = _moonAmount;
+    moons = new ArrayList<Moon>();
+
+    planetRotation = 0;
+    planetRadius = planetDiameter/2;
+
+    // create the Moon of a given planet if the "hasMoon" statement is true   
+    if (hasMoon == true) {
+      for (int i = 0; i < moonAmount; i++) {
+        moon = new Moon(this);
+        moons.add(moon);
+      }
+    }
   }
 
   void update() {
     // Increment the angle to rotate
-    theta += orbitSpeed;
-
-    // create the Moon of a given planet if the constructor statement is true and
-    // pass the information to the update function with a variable
-    if (hasMoon == true) {
-      moon = new Moon(diameter*1.5, diameter/4);
-      moonSpawned = 1;
-    }
-    hasMoon = false;
+    planetRotation += planetOrbitSpeed;
   }
 
   void display() {
@@ -42,18 +53,26 @@ class Planet {
     pushMatrix(); 
 
     // Rotate orbit
-    rotate(theta); 
+    rotate(planetRotation); 
 
     // translate out distance
-    translate(distance, 0); 
+    translate(planetDistance, 0); 
+
     stroke(0);
     fill(175);
-    ellipse(0, 0, diameter, diameter);
+    ellipse(0, 0, planetDiameter, planetDiameter);
 
-    // The planet is drawn, now draw the moon if the planet object has one
-    if (moonSpawned == 1) {
-      moon.update();
-      moon.display();
+    fill(200, 200, 0);
+    rotate(-planetRotation); // counter the rotation of the planet so that the text below always will be vertical on screen
+    text(planetName, planetDiameter, 0);
+    println(planetName, moonAmount);
+
+    // The planet is drawn, now draw and update the moon(s) if the planet object has one
+    if (hasMoon == true) {
+      for (int i = moons.size() -1; i > -1; i--) {       
+        moons.get(i).update();
+        moons.get(i).display();
+      }
     }
     // Once the planet is drawn, the matrix is restored with popMatrix() so that the next planet is not affected.
     popMatrix();
